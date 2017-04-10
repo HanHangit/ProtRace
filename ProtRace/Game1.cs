@@ -14,6 +14,9 @@ namespace ProtRace
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+
+
+        Map map;
         Model model;
         List<Box> boxofboxes = new List<Box>();
         float rotate; //rotate wheels
@@ -44,6 +47,9 @@ namespace ProtRace
             boxofboxes.Add(new Box(new Vector3(-10, 1, -10)));
             foreach (Box box in boxofboxes)
                 box.Initialize(Content);
+
+            map = new Map(GraphicsDevice);
+
             base.Initialize();
         }
 
@@ -77,6 +83,9 @@ namespace ProtRace
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+
+            map.Update(gameTime);
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
           
@@ -153,8 +162,11 @@ namespace ProtRace
             float aspectRatio =
            graphics.PreferredBackBufferWidth / (float)graphics.PreferredBackBufferHeight;
 
- 
+
             //draw player
+
+            map.Draw(GraphicsDevice, view, projection, world);
+
             DrawModel(model, world, view, projection);
             //draw box
             foreach (Box box in boxofboxes)
