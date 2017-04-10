@@ -10,37 +10,52 @@ namespace ProtRace
 {
     class Map
     {
-        Vector3 size = new Vector3(64, 64, 64);
-        int[,,] data = new int[5,5,1];
+        Vector3 size = new Vector3(16, 16, 16);
+        int[,,] data = new int[2, 1, 10];
         BasicEffect basicEffect;
         VertexBuffer vertexBuffer;
-        VertexPositionColor[] vertices;
+        List<VertexPositionColor> vertices;
 
         public Map(GraphicsDevice graphDevice)
         {
-            vertices = new VertexPositionColor[6 * data.GetLength(0) * data.GetLength(1)];
+            vertices = new List<VertexPositionColor>();
 
             basicEffect = new BasicEffect(graphDevice);
 
-            for(int i = 0; i < data.GetLength(1); ++i)
-                for(int j = 0; j < data.GetLength(0); ++j)
-            {
-                    FillVerticesBot(vertices, i * data.GetLength(0) * 6 + j * 6, new Vector3(i / 6 * size.X,-3f,0) + new Vector3(0,0,0),Color.OliveDrab);
-            }
+            for (int i = 0; i < data.GetLength(0); ++i)
+                for (int j = 0; j < data.GetLength(2); ++j)
+                {
+                    FillVerticesBot(vertices, new Vector3(i * size.X, -3f, j * -size.Z) + new Vector3(-size.X * data.GetLength(0) / 2, 0, 0), Color.OliveDrab);
 
-            vertexBuffer = new VertexBuffer(graphDevice, typeof(VertexPositionColor), vertices.Length, BufferUsage.WriteOnly);
-            vertexBuffer.SetData(vertices);
+                    if(i == 0)
+                        FillVerticesWallStraight(vertices, new Vector3(i * size.X, -3f, j * -size.Z) + new Vector3(-size.X * data.GetLength(0) / 2, 0,0), Color.SaddleBrown);
+                    else if(i == data.GetLength(0) - 1)
+                        FillVerticesWallStraight(vertices, new Vector3((i + 1) * size.X, -3f, j * -size.Z) + new Vector3(-size.X * data.GetLength(0) / 2, 0, 0), Color.SaddleBrown);
+                }
+
+            vertexBuffer = new VertexBuffer(graphDevice, typeof(VertexPositionColor), vertices.Count, BufferUsage.WriteOnly);
+            vertexBuffer.SetData(vertices.ToArray());
         }
 
 
-        void FillVerticesBot(VertexPositionColor[] vertices, int start, Vector3 vect, Color clr)
+        void FillVerticesBot(List<VertexPositionColor> vertices, Vector3 vect, Color clr)
         {
-            vertices[start] = new VertexPositionColor(vect, Color.OliveDrab);
-            vertices[start + 1] = new VertexPositionColor(vect + new Vector3(size.X, 0, 0), clr);
-            vertices[start + 2] = new VertexPositionColor(vect + new Vector3(0, 0, -size.Z), clr);
-            vertices[start + 3] = new VertexPositionColor(vect + new Vector3(size.X, 0, 0), clr);
-            vertices[start + 4] = new VertexPositionColor(vect + new Vector3(size.X, 0, -size.Z), clr);
-            vertices[start + 5] = new VertexPositionColor(vect + new Vector3(0, 0, -size.Z), clr);
+            vertices.Add(new VertexPositionColor(vect, clr));
+            vertices.Add(new VertexPositionColor(vect + new Vector3(size.X, 0, 0), clr));
+            vertices.Add(new VertexPositionColor(vect + new Vector3(0, 0, -size.Z), clr));
+            vertices.Add(new VertexPositionColor(vect + new Vector3(size.X, 0, 0), clr));
+            vertices.Add(new VertexPositionColor(vect + new Vector3(size.X, 0, -size.Z), clr));
+            vertices.Add(new VertexPositionColor(vect + new Vector3(0, 0, -size.Z), clr));
+        }
+
+        void FillVerticesWallStraight(List<VertexPositionColor> vertices, Vector3 vect, Color clr)
+        {
+            vertices.Add(new VertexPositionColor(vect, clr));
+            vertices.Add(new VertexPositionColor(vect + new Vector3(0, size.Y, 0), clr));
+            vertices.Add(new VertexPositionColor(vect + new Vector3(0, 0, -size.Z), clr));
+            vertices.Add(new VertexPositionColor(vect + new Vector3(0, size.Y, 0), clr));
+            vertices.Add(new VertexPositionColor(vect + new Vector3(0, size.Y, -size.Z), clr));
+            vertices.Add(new VertexPositionColor(vect + new Vector3(0, 0, -size.Z), clr));
         }
 
         public void Update(GameTime gameTime)
@@ -50,9 +65,9 @@ namespace ProtRace
 
         public void Draw(GraphicsDevice graphDevice, Matrix view, Matrix proj, Matrix world)
         {
-            basicEffect.World = world;
+            basicEffect.World = Matrix.Identity;
             basicEffect.View = view;
-            basicEffect.Projection = proj;
+            basicEffect.Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45), 1f, 0.1f, 200f);
             basicEffect.VertexColorEnabled = true;
 
             graphDevice.SetVertexBuffer(vertexBuffer);
@@ -64,7 +79,7 @@ namespace ProtRace
             foreach (EffectPass pass in basicEffect.CurrentTechnique.Passes)
             {
                 pass.Apply();
-                graphDevice.DrawPrimitives(PrimitiveType.TriangleList, 0, 2);
+                graphDevice.DrawPrimitives(PrimitiveType.TriangleList, 0, vertices.Count);
             }
         }
     }
