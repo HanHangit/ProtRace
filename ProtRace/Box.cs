@@ -18,7 +18,7 @@ namespace ProtRace
         public void Initialize(ContentManager contentManager)
         {
             model = contentManager.Load<Model>("box");
-
+          
         }
         public Vector3 getPos()
         {
@@ -32,19 +32,19 @@ namespace ProtRace
 
         public Box(Vector3 position)
         {
-            pos = position;
+            pos = position+new Vector3(0, 0,0);//0.295f
             scale = 1f;
         }
 
         public Box(Vector3 position, float scalefaktor)
         {
-            pos = position;
+            pos = position + new Vector3(0.295f*scalefaktor, 0, 0); ;
             scale = scalefaktor;
         }
 
         public void Draw(Matrix view)
         {
-    
+            
 
             //draw box
             foreach (ModelMesh mesh in model.Meshes)
@@ -53,7 +53,8 @@ namespace ProtRace
                 {
                     effect.EnableDefaultLighting();
                     effect.PreferPerPixelLighting = true;
-                  
+                   // effect.TextureEnabled = true;
+                    
                     effect.World = Matrix.CreateScale(scale)*Matrix.CreateTranslation(pos);
   
                     effect.View = view;
