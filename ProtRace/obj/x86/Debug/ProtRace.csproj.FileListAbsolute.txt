@@ -24,3 +24,5 @@ C:\Users\User\Desktop\ProtRace-master\ProtRace\obj\x86\Debug\ProtRace.pdb
 C:\Users\User\Desktop\ProtRace-master\ProtRace\bin\Windows\x86\Debug\Content\robot.xnb
 C:\Users\User\Desktop\ProtRace-master\ProtRace\bin\Windows\x86\Debug\Content\robottexture_0.xnb
 C:\Users\User\Desktop\ProtRace-master\ProtRace\bin\Windows\x86\Debug\Content\box.xnb
+C:\Users\User\Desktop\ProtRace-master\ProtRace\bin\Windows\x86\Debug\Content\coin.xnb
+C:\Users\User\Desktop\ProtRace-master\ProtRace\bin\Windows\x86\Debug\Content\Score.xnb
