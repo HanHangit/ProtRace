@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
 //X-positiv links
 //Y-positiv oben
@@ -19,21 +20,21 @@ namespace ProtRace
         Map map;
         Model model;
         List<Box> boxofboxes = new List<Box>();
-        List<Coin> CoinList= new List<Coin>();
+        List<Coin> CoinList = new List<Coin>();
         float rotate; //rotate wheels
         private Vector3 position;
-        private Matrix world= Matrix.Identity;
+        private Matrix world = Matrix.Identity;
         private Matrix view = Matrix.Identity;
         private Matrix projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45), 800f / 480f, 0.1f, 500f);
         float v; //Geschwindigkeit
         float a;//Beschleunigung
         float maxv; // Max-Geschwindigkeit
-        bool up,down,left,right;
+        bool up, down, left, right;
         int CoinCounter;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
-                //graphics.IsFullScreen = true;
+            //graphics.IsFullScreen = true;
             Content.RootDirectory = "Content";
         }
 
@@ -46,20 +47,16 @@ namespace ProtRace
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            rotate = 0;CoinCounter = 0;
+            rotate = 0; CoinCounter = 0;
             v = 0f; a = 0.0075f; maxv = 3f; up = false; down = false; left = false; right = false;
-           boxofboxes.Add(new Box(new Vector3(0, 0, -20), 2f));
-            boxofboxes.Add(new Box(new Vector3(10, 0,-100 )));
-           boxofboxes.Add(new Box(new Vector3(-8, 0, -20)));
-            boxofboxes.Add(new Box(new Vector3(0, 0, -100),3f));
-            foreach (Box box in boxofboxes)
-                box.Initialize(Content);
 
-            map = new Map(GraphicsDevice);
+            map = new Map(GraphicsDevice, Content, CoinList, boxofboxes);
 
-            CoinList.Add(new Coin(new Vector3(0, 0, -50)));
             foreach (Coin coin in CoinList)
                 coin.Initialize(Content);
+            foreach (Box box in boxofboxes)
+                box.Initialize(Content);
+            position = new Vector3(map.size.X * 5 - map.size.X / 2, 0, 0);
 
             base.Initialize();
         }
@@ -76,7 +73,7 @@ namespace ProtRace
             CoinFont = Content.Load<SpriteFont>("Score");
             //  box = Content.Load<Model>("box");
             // TODO: use this.Content to load your game content here
-          
+
         }
 
         /// <summary>
@@ -137,7 +134,7 @@ namespace ProtRace
                 if (v > 0)
                 {
                     v -= 3 * a;
-                
+
                     position -= new Vector3(rotate * 2 * v, 0, v);//1f
 
                 }
@@ -145,9 +142,9 @@ namespace ProtRace
                 {
 
 
-        
+
                     position += new Vector3(rotate, 0, 0.25f);
-                 
+
                 }
             }
 
@@ -172,18 +169,20 @@ namespace ProtRace
             }
 
             foreach (Coin coin in CoinList)
-                CoinCounter+=coin.Kollision(position);
+                CoinCounter += coin.Kollision(position);
+
+
             //if (position.Z==-100f) Exit();
 
             foreach (Box box in boxofboxes)
             {
 
-             
+
 
                 //Frontkollision
 
                 if ((position.Z - box.getPos().Z - 3f * box.getScale() < 0.5) && (position.Z - box.getPos().Z - 3f * box.getScale() > 0) &&
-      (position.X - box.getPos().X) < 2.1f+(box.getScale()-1)*1.4 && (position.X - box.getPos().X) > -2.5f - (box.getScale() - 1) * 1.8)
+      (position.X - box.getPos().X) < 2.1f + (box.getScale() - 1) * 1.4 && (position.X - box.getPos().X) > -2.5f - (box.getScale() - 1) * 1.8)
                 {
                     position += new Vector3(0, 0, v);
                     v = 0;
@@ -197,31 +196,37 @@ namespace ProtRace
                     position += new Vector3(-rotate * 2 * v, 0, v);
                     v = 0;
                 }
-        
 
-                  //Linke Seite Kollision
 
-                  if ((position.X - box.getPos().X > -2.5 - (box.getScale() - 1) * 1.9) && (position.X - box.getPos().X < 0) &&
-      (position.Z - box.getPos().Z) < 2.1f + (box.getScale() - 1) * 4 && (position.Z - box.getPos().Z) > -2.5f- (box.getScale() - 1) * 1.55)
-                  {
-                  position -= new Vector3(rotate * 2 * v, 0, v);
-                  v = 0;
-              }
-              
-              //Backkollision
+                //Linke Seite Kollision
 
-              if ((position.Z - box.getPos().Z + 3f > -0.5 - (box.getScale() - 1) * 3) && (position.Z - box.getPos().Z + 3f + (box.getScale() - 1) * 2.5 < 0) &&
-    (position.X - box.getPos().X) < 1.6f +(box.getScale() - 1) * 1.6 && (position.X - box.getPos().X) > -2.0f -(box.getScale() - 1) * 2.5)
-              {
-                
-                position += new Vector3(rotate, 0, -0.25f);
+                if ((position.X - box.getPos().X > -2.5 - (box.getScale() - 1) * 1.9) && (position.X - box.getPos().X < 0) &&
+    (position.Z - box.getPos().Z) < 2.1f + (box.getScale() - 1) * 4 && (position.Z - box.getPos().Z) > -2.5f - (box.getScale() - 1) * 1.55)
+                {
+                    position -= new Vector3(rotate * 2 * v, 0, v);
                     v = 0;
                 }
-              
-                view = Matrix.CreateLookAt(new Vector3(0 + position.X, position.Y + 2, position.Z + 8), new Vector3(0 + position.X, position.Y, position.Z - 5), Vector3.UnitY);
+
+                //Backkollision
+
+                if ((position.Z - box.getPos().Z + 3f > -0.5 - (box.getScale() - 1) * 3) && (position.Z - box.getPos().Z + 3f + (box.getScale() - 1) * 2.5 < 0) &&
+      (position.X - box.getPos().X) < 1.6f + (box.getScale() - 1) * 1.6 && (position.X - box.getPos().X) > -2.0f - (box.getScale() - 1) * 2.5)
+                {
+
+                    position += new Vector3(rotate, 0, -0.25f);
+                    v = 0;
+                }
+            }
+
+            if (!map.Walkable(position))
+                v = 0;
+
+
+
+            view = Matrix.CreateLookAt(new Vector3(0 + position.X, position.Y + 2, position.Z + 8), new Vector3(0 + position.X, position.Y, position.Z - 5), Vector3.UnitY);
             base.Update(gameTime);
+
         }
-    }
 
         /// <summary>
         /// This is called when the game should draw itself.
@@ -236,16 +241,16 @@ namespace ProtRace
             // independently, which can use different textures,
             // and which can have different rendering states
             // such as lighting applied.
-         
+
 
             float aspectRatio =
            graphics.PreferredBackBufferWidth / (float)graphics.PreferredBackBufferHeight;
 
-          
+
             //draw player
 
             map.Draw(GraphicsDevice, view, projection, world);
-          
+
 
             DrawModel(model, world, view, projection);
             //draw box
@@ -256,16 +261,17 @@ namespace ProtRace
 
 
             // GraphicsDevice.SamplerStates[0] = SamplerState.LinearWrap;
-           //  GraphicsDevice.BlendState = BlendState.Opaque;
+            //  GraphicsDevice.BlendState = BlendState.Opaque;
             // GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             spriteBatch.Begin();
             spriteBatch.DrawString(CoinFont, "Score: " + CoinCounter, new Vector2(50, 50), Color.Black);
             spriteBatch.End();
             GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+            Console.WriteLine(position);
             base.Draw(gameTime);
-          
+
         }
- 
+
         private void DrawModel(Model model, Matrix world, Matrix view, Matrix projection)
         {
             foreach (ModelMesh mesh in model.Meshes)

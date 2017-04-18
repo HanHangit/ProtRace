@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/User/Desktop/ProtRace-master/ProtRace/Content/coin.blend</SourceFile>
-  <SourceTime>2016-11-25T03:07:36+01:00</SourceTime>
-  <DestFile>C:/Users/User/Desktop/ProtRace-master/ProtRace/Content/bin/Windows/coin.xnb</DestFile>
-  <DestTime>2017-04-11T19:24:07.4374664+02:00</DestTime>
+  <SourceFile>F:/Projects/ProtRace/ProtRace/Content/coin.blend</SourceFile>
+  <SourceTime>2017-04-18T19:18:22.4024627+02:00</SourceTime>
+  <DestFile>F:/Projects/ProtRace/ProtRace/Content/bin/Windows/coin.xnb</DestFile>
+  <DestTime>2017-04-18T19:18:30.8542721+02:00</DestTime>
   <Importer>OpenAssetImporter</Importer>
   <ImporterTime>2017-03-01T16:05:36+01:00</ImporterTime>
   <Processor>ModelProcessor</Processor>

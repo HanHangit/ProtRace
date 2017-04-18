@@ -58,7 +58,7 @@ namespace ProtRace
   
                     effect.View = view;
 
-                    effect.Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45), 1f, 0.1f, 200f);
+                    effect.Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45), 800f / 480f, 0.1f, 500f);
 
                 }
 

@@ -30,33 +30,34 @@ namespace ProtRace
         public void Draw(Matrix view)
         {
 
-            if(pos != new Vector3(0, -50, 0)) // nicht mehr draw wenn eingesammelt
-            //draw box
-            foreach (ModelMesh mesh in model.Meshes)
-            {
-                foreach (BasicEffect effect in mesh.Effects)
+            if (pos != new Vector3(0, -50, 0)) // nicht mehr draw wenn eingesammelt
+                                               //draw box
+                foreach (ModelMesh mesh in model.Meshes)
                 {
-                    effect.EnableDefaultLighting();
-                    effect.PreferPerPixelLighting = true;
+                    foreach (BasicEffect effect in mesh.Effects)
+                    {
+                        effect.EnableDefaultLighting();
+                        effect.PreferPerPixelLighting = true;
 
-                    effect.World = Matrix.CreateScale(0.15f) * Matrix.CreateTranslation(pos);
+                        effect.World = Matrix.CreateScale(0.15f) * Matrix.CreateTranslation(pos);
 
-                    effect.View = view;
+                        effect.View = view;
 
-                    effect.Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45), 1f, 0.1f, 200f);
+                        effect.Projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(45), 800f / 480f, 0.1f, 500f);
 
+                    }
+
+                    mesh.Draw();
                 }
-
-                mesh.Draw();
-            }
         }
-public int Kollision(Vector3 position)
+        public int Kollision(Vector3 position)
         {
             if (System.Math.Abs(position.X - pos.X) < 2.05 &&
       System.Math.Abs(position.Y - pos.Y) < 2.05 &&
-      System.Math.Abs(position.Z - pos.Z) < 2.05) { 
+      System.Math.Abs(position.Z - pos.Z) < 2.05)
+            {
                 pos = new Vector3(0, -50, 0);//unter der Map
-                
+
                 return 1;
             }
             return 0;
