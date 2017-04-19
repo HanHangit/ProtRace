@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/User/Desktop/ProtRace-master/ProtRace/Content/Score.spritefont</SourceFile>
-  <SourceTime>2017-04-18T15:57:46+02:00</SourceTime>
-  <DestFile>C:/Users/User/Desktop/ProtRace-master/ProtRace/Content/bin/Windows/Score.xnb</DestFile>
-  <DestTime>2017-04-19T13:53:44.6275209+02:00</DestTime>
+  <SourceFile>C:/Users/User/Desktop/ProtRace-master/ProtRace/Content/Start.spritefont</SourceFile>
+  <SourceTime>2017-04-19T14:46:27.5478774+02:00</SourceTime>
+  <DestFile>C:/Users/User/Desktop/ProtRace-master/ProtRace/Content/bin/Windows/Start.xnb</DestFile>
+  <DestTime>2017-04-19T14:47:02.2767984+02:00</DestTime>
   <Importer>FontDescriptionImporter</Importer>
   <ImporterTime>2017-03-01T16:05:36+01:00</ImporterTime>
   <Processor>FontDescriptionProcessor</Processor>

@@ -22,6 +22,12 @@ namespace ProtRace
         {
             return pos;
         }
+
+        public void setPos(Vector3 position)
+        {
+            pos=position;
+        }
+
         public Coin(Vector3 position)
         {
             pos = position;
@@ -52,9 +58,9 @@ namespace ProtRace
         }
         public int Kollision(Vector3 position)
         {
-            if (System.Math.Abs(position.X - pos.X) < 2.05 &&
-      System.Math.Abs(position.Y - pos.Y) < 2.05 &&
-      System.Math.Abs(position.Z - pos.Z) < 2.05)
+            if (System.Math.Abs(position.X - pos.X) < 2.55 &&
+      System.Math.Abs(position.Y - pos.Y) < 2.55 &&
+      System.Math.Abs(position.Z - pos.Z) < 2.55)
             {
                 pos = new Vector3(0, -50, 0);//unter der Map
 
